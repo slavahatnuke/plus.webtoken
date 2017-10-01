@@ -13,3 +13,10 @@ console.log(verify(token, 'secret'));
 // { hi: 'there' }
 
 ```
+
+## ES5
+```javascript
+var {sign, verify} = require('plus.base64-token/es5');
+// .....
+
+```
