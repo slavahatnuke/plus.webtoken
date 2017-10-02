@@ -20,3 +20,12 @@ var {sign, verify} = require('plus.base64-token/es5');
 // .....
 
 ```
+
+## CLI
+```
+
+Base64 Token
+> plus.base64-token sign path/to/file.json secret
+> plus.base64-token verify token secret
+
+```
