@@ -1,20 +1,31 @@
-const base64 = require('base-64');
-const md5 = require('js-md5');
+const CryptoJS = require("crypto-js");
+const base64url = require("base64url");
 
 module.exports = {
   sign: (data, secret = '') => {
-    const encodedData = base64.encode(JSON.stringify(data));
-    return `${encodedData}.${md5(secret + encodedData)}`;
+    const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(data), secret).toString();
+    const encrypted = base64url.encode(encryptedData);
+
+    const hmacSHA1 = CryptoJS.HmacSHA1(encrypted, secret);
+    const hmacSHA1Base64 = hmacSHA1.toString(CryptoJS.enc.Base64);
+
+    const sign = base64url.encode(hmacSHA1Base64);
+
+    return `${encrypted}.${sign}`;
   },
   verify: (token, secret = '') => {
-    const [data, hash] = ('' + token).split('.');
+    const [encrypted, sign] = ('' + token).split('.');
 
-    if (data && hash) {
-      if (md5(secret + data) === hash) {
-        try {
-          return JSON.parse(base64.decode(data));
-        } catch (e) {
-        }
+    if (encrypted && sign) {
+
+      const hmacSHA1 = CryptoJS.HmacSHA1(encrypted, secret);
+      const hmacSHA1Base64 = hmacSHA1.toString(CryptoJS.enc.Base64);
+
+      const expectedSign = base64url.encode(hmacSHA1Base64);
+
+      if (expectedSign === sign) {
+        const bytes = CryptoJS.AES.decrypt(base64url.decode(encrypted), secret);
+        return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
       }
     }
   }
