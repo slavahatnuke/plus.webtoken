@@ -1,5 +1,5 @@
 # plus.webtoken
-The simplest crypto-js (AES / HmacSHA1)based token
+The simplest crypto-js (AES / HmacSHA1) based. Secure token web token for browsers. 
 
 ```javascript
 let {encrypt, decrypt} = require('plus.webtoken');
