@@ -24,8 +24,8 @@ var {encrypt, decrypt} = require('plus.webtoken/es5');
 ## CLI
 ```
 
-Base64 Token
-> plus.base64-token sign path/to/file.json secret
-> plus.base64-token verify token secret
+Web Token
+> plus.webtoken encrypt path/to/file.json secret
+> plus.webtoken decrypt token secret
 
 ```
