@@ -2,7 +2,7 @@ const CryptoJS = require("crypto-js");
 const base64url = require("base64url");
 
 module.exports = {
-  sign: (data, secret = '') => {
+  encrypt: (data, secret = '') => {
     const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(data), secret).toString();
     const encrypted = base64url.fromBase64(encryptedData);
 
@@ -13,7 +13,7 @@ module.exports = {
 
     return `${encrypted}.${sign}`;
   },
-  verify: (token, secret = '') => {
+  decrypt: (token, secret = '') => {
     const [encrypted, sign] = ('' + token).split('.');
 
     if (encrypted && sign) {

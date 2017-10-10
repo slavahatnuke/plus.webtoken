@@ -8533,7 +8533,7 @@ module.exports = {
     var secret = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
 
     var encryptedData = CryptoJS.AES.encrypt(JSON.stringify(data), secret).toString();
-    var encrypted = base64url.encode(encryptedData);
+    var encrypted = base64url.fromBase64(encryptedData);
 
     var hmacSHA1 = CryptoJS.HmacSHA1(encrypted, secret);
     var hmacSHA1Base64 = hmacSHA1.toString(CryptoJS.enc.Base64);
@@ -8558,7 +8558,7 @@ module.exports = {
       var expectedSign = base64url.encode(hmacSHA1Base64);
 
       if (expectedSign === sign) {
-        var bytes = CryptoJS.AES.decrypt(base64url.decode(encrypted), secret);
+        var bytes = CryptoJS.AES.decrypt(base64url.toBase64(encrypted), secret);
         return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
       }
     }
