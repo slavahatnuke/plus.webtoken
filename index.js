@@ -4,7 +4,7 @@ const base64url = require("base64url");
 module.exports = {
   sign: (data, secret = '') => {
     const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(data), secret).toString();
-    const encrypted = base64url.encode(encryptedData);
+    const encrypted = base64url.fromBase64(encryptedData);
 
     const hmacSHA1 = CryptoJS.HmacSHA1(encrypted, secret);
     const hmacSHA1Base64 = hmacSHA1.toString(CryptoJS.enc.Base64);
@@ -24,7 +24,7 @@ module.exports = {
       const expectedSign = base64url.encode(hmacSHA1Base64);
 
       if (expectedSign === sign) {
-        const bytes = CryptoJS.AES.decrypt(base64url.decode(encrypted), secret);
+        const bytes = CryptoJS.AES.decrypt(base64url.toBase64(encrypted), secret);
         return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
       }
     }
